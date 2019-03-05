@@ -1,0 +1,1 @@
+dotnet Oss.dll parse -file all.txt

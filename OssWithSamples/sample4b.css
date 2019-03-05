@@ -1,0 +1,5 @@
+var cl1 = yellow;
+var cl2 = pink;
+var x = 1em;
+
+@insert sample4base.css;

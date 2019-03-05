@@ -1,0 +1,1 @@
+dotnet Oss.dll parse sample2.css res2.css

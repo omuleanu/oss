@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+    <Authors>Valentin Plamadeala</Authors>
+    <Product>Oss</Product>
+    <Copyright>Valentin Plamadeala</Copyright>
+    <PackageProjectUrl>https://github.com/omuleanu/oss</PackageProjectUrl>
+    <PackageTags>css preprocessor</PackageTags>
+  </PropertyGroup>
+
+</Project>

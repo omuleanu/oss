@@ -1,0 +1,5 @@
+.rule1 {
+	color: var.cl1;
+	border-color: var.cl2;
+	font-size: var.x;
+}

@@ -1,0 +1,7 @@
+var cl1 = green;
+var cl2 = blue;
+
+var a = 2;
+var x = @calc(var.a * 1.5)em;
+
+@insert sample4base.css;

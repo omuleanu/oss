@@ -1,0 +1,36 @@
+var zoom = 1.3;
+var color = green;
+
+var bl1 = { 
+	text-align: center;
+	color: var.color;
+};
+
+var delempt = rem;
+
+var rls1 = 
+{	
+	.cl1
+	{
+		zoom: var.zoom;
+	}
+
+	.cl2 
+	{
+		color: green;
+		var.bl1;
+	}
+};
+
+@var.rls1;
+
+.ruleWithParam
+{
+	border-radius: 5px;
+	var(bl1){ color = red; };
+}
+
+.willberemoved
+{
+	var.delempt;
+}

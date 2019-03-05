@@ -1,0 +1,5 @@
+sample1.css:res1.css
+sample2.css:res2.css
+sample3.css:res3.css
+sample4a.css:res4a.css
+sample4b.css:res4b.css

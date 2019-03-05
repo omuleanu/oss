@@ -1,0 +1,18 @@
+.cl1
+{
+	zoom: 1.3;
+}
+
+.cl2 
+{
+	color: green;
+	text-align: center;
+	color: green;
+}
+
+.ruleWithParam
+{
+	border-radius: 5px;
+	text-align: center;
+	color: red;
+}
