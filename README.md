@@ -6,6 +6,7 @@ to parse 1 file call:
 dotnet Oss.dll parse sample1.css res1.css
 ```
 after you run `parse` it will watch `sample1.css` for changes and save to `res1.css` every time you change `sample1.css` and you hit enter (close the console) if you want to stop watching for changes, same applies to the rest of parse commands,
+
 use `-nowatch` if you don't want to watch for changes.
 
 to parse multiple files: 
