@@ -5,7 +5,7 @@ to parse 1 file call:
 ```
 dotnet Oss.dll parse sample1.css res1.css
 ```
-after you run `parse` it will watch `sample1.css` for changes and save to `res1.css` every time you change `sample1.css` and you hit enter (close the console) to stop watching for changes, same applies to rest of parse commands, use `-nowatch` if you don't want to watch for changes.
+after you run `parse` it will watch `sample1.css` for changes and save to `res1.css` every time you change `sample1.css` and you hit enter (close the console) if you want to stop watching for changes, same applies to the rest of parse commands, use `-nowatch` if you don't want to watch for changes.
 
 to parse multiple files: 
 ```
@@ -201,3 +201,24 @@ var :bl1 = {
 {
     var(bl1){ color = red; };
 }
+```
+## Merge
+You can merge the contents of 2 files by calling `merge`, example:
+```
+dotnet Oss.dll merge theme1.css theme2.css
+```
+so if theme1.css is:
+```
+var a = red;
+var b = blue;
+```
+and theme2.css is:
+```
+var b = pink;
+```
+theme2.css will change to:
+```
+var a = red;
+var b = pink;
+```
+theme2.css.bak will be created with the original content
