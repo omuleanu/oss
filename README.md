@@ -117,3 +117,67 @@ will output:
     color: red;
 }
 ```
+## Rules Variables
+A variable can contain whole css rules. These variables will be called using `@var.name`, it works the same as `@insert` except instead of content of file, the content of a variable is inserted. Parameters can't be set to these variables.
+```
+var zoom = 1.3;
+var color = green;
+
+var bl1 = { 
+    text-align: center;
+    color: var.color;
+};
+
+var rls1 = 
+{   
+    .cl1
+    {
+        zoom: var.zoom;
+    }
+
+    .cl2 
+    {
+        color: green;
+        var.bl1;
+    }
+};
+
+@var.rls1;
+```
+will output:
+```
+.cl1
+{
+    zoom: 1.3;
+}
+
+.cl2 
+{
+    color: green;
+    text-align: center;
+    color: green;
+}
+```
+## Remove Empty Rule
+If a css rule contains a call to a variable that has the value `rem` and nothing else, the rule will be removed.
+```
+var delempt = rem;
+.willberemoved
+{
+    var.delempt;
+}
+```
+will output nothing
+
+## Lazy variables
+To make a variable lazy add `:` in front of the name.
+If you define a variable that calls other variables which are not defined yet, or intended to be only parameters, you will get an error when the current variable declaration is parsed, to avoid that you can make it lazy and the variable content will be parsed when it will be used.
+```
+var :bl1 = { 
+    color: var.color;
+};
+
+.ruleWithParam
+{
+    var(bl1){ color = red; };
+}
