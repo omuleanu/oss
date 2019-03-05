@@ -92,4 +92,28 @@ will output:
     font-size: 3em;
 }
 ```
+
+## Variable with parameters
+```
+var color = green;
+
+var bl1 = { 
+    text-align: center;
+    color: var.color;
+};
+
+.ruleWithParam
+{
+    border-radius: 5px;
+    var(bl1){ color = red; };
+}
+```
+will output:
+```
+.ruleWithParam
+{
+    border-radius: 5px;
+    text-align: center;
+    color: red;
+}
 ```
