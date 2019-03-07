@@ -60,7 +60,7 @@ will output:
 @name base1;
 .rule1
 {
-    border-witdh: 1px;  
+    border-width: 1px;  
 }
 
 .rule2
@@ -80,7 +80,7 @@ will output:
 .rule2,
 .rule3
 {
-    border-witdh: 1px;  
+    border-width: 1px;  
 }
 
 .rule2
