@@ -1,16 +1,16 @@
 @name base1;
 .rule1
 {
-	border-witdh: 1px;	
+    border-width: 1px;  
 }
 
 .rule2
 {
-	@inherit base1;
-	color: blue;
+    @inherit base1;
+    color: blue;
 }
 
 .rule3
 {
-	@inherit base1;
+    @inherit base1;
 }
