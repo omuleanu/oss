@@ -8,6 +8,8 @@ namespace Oss
 
         public IEnumerable<string> InsertedFiles { get; set; }
 
-        public string ParseRes { get; set;}
+        public string ParseRes { get; set; }
+        
+        public IEnumerable<string> UnusedVars { get; set; }
     }
 }

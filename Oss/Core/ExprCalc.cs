@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Oss.Core
 {
     public static class ExprCalc
     {
-        static char[] operators = new char[] { '+', '-', '*', '/' };
+        static readonly char[] operators = { '+', '-', '*', '/' };
 
         public static double Eval(string expr)
         {
@@ -52,7 +53,7 @@ namespace Oss.Core
                     part = part.FromTo(1, part.Length - 2).Trim();
                 }
 
-                if (!double.TryParse(part, out double pres))
+                if (!double.TryParse(part, NumberStyles.Number, CultureInfo.InvariantCulture, out double pres))
                 {
                     pres = CalcExprOp(part, parant ? 0 : opix + 1);
                 }

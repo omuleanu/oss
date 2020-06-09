@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -10,6 +10,7 @@
     <Copyright>Valentin Plamadeala</Copyright>
     <PackageProjectUrl>https://github.com/omuleanu/oss</PackageProjectUrl>
     <PackageTags>css preprocessor</PackageTags>
+    <Version>1.1</Version>
   </PropertyGroup>
 
 </Project>

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Oss.Core;
@@ -80,7 +82,8 @@ namespace Oss
             // named rule, used for inheritance
             string ruleName = null;
 
-            var vars = new SortedDictionary<string, OssVar>(new ReverseComparer<string>(StringComparer.InvariantCulture));
+            var vars = new VarStorg();
+            //var vars = new SortedDictionary<string, OssVar>(new ReverseComparer<string>(StringComparer.InvariantCulture));
 
             void ClearEmpty()
             {
@@ -265,18 +268,26 @@ namespace Oss
             }
 
             slres = slres.Trim(StrConst.EmptyChars);
+            
+            var unusedVars = vars.GetUnusedNames().ToArray();
+
+            if (unusedVars.Any())
+            {
+                logger.Warn("unused variables: " + string.Join(", ", unusedVars));
+            }
 
             return new OssParseResult
             {
                 ParseRes = slres,
                 InsertedFiles = insertedList,
-                Errors = errors
+                Errors = errors,
+                UnusedVars = unusedVars
             };
         }
 
-        public ParseContentRes ParseContent(string str, IDictionary<string, OssVar> vars)
+        public ParseContentRes ParseContent(string str, VarStorg vars)
         {
-            IDictionary<string, OssVar> localVars = null;
+            VarStorg localVars = null;
 
             var res = string.Empty;
             var inherits = new List<string>();
@@ -318,7 +329,7 @@ namespace Oss
                     }
                     else
                     {
-                        res = res + val.ToString("0.##");
+                        res = res + val.ToString("0.##", CultureInfo.InvariantCulture);
                     }
 
                     i = endi;
@@ -369,7 +380,7 @@ namespace Oss
 
                             var parms = ParamsParser.Parse(pcon);
 
-                            localVars = new Dictionary<string, OssVar>();
+                            localVars = new VarStorg();
 
                             foreach (var parm in parms)
                             {
@@ -395,13 +406,17 @@ namespace Oss
 
                         if (localVars != null)
                         {
-                            foreach (var item in vars)
-                            {
-                                if (!localVars.ContainsKey(item.Key))
-                                {
-                                    localVars.Add(item);
-                                }
-                            }
+                            // merge vars into localVars, without vars that exist in localVars
+
+                            //foreach (var item in vars)
+                            //{
+                            //    if (!localVars.ContainsKey(item.Key))
+                            //    {
+                            //        localVars.Add(item);
+                            //    }
+                            //}
+
+                            localVars.SetBase(vars);
 
                             val = ParseContent(vpr.RawContent, localVars).Content;
                         }

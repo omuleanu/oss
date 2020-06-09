@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 using Oss;
 using System.Text;
@@ -77,6 +78,23 @@ namespace Tests
             var input = str.ToString();
 
             var res = parser.ParseOssString(input, null);
+            res.ParseRes.Out();
+            Assert.IsTrue(res.ParseRes.Contains(".cl1 { color: red; }"));
+        }
+
+        [Test]
+        public void ParseDetectUnusedVar()
+        {
+            var parser = new OssParser();
+            var str = new StringBuilder();
+            str.AppendLine("var color1 = red;");
+            str.AppendLine("var color2 = blue;");
+            str.AppendLine(".cl1 { color: var.color1; }");
+            var input = str.ToString();
+
+            var res = parser.ParseOssString(input, null);
+            Assert.AreEqual(1, res.UnusedVars.Count());
+            Assert.AreEqual("color2", res.UnusedVars.First());
             res.ParseRes.Out();
             Assert.IsTrue(res.ParseRes.Contains(".cl1 { color: red; }"));
         }
