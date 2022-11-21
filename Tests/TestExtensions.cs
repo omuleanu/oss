@@ -16,6 +16,11 @@ namespace Tests
             Assert.IsTrue(condition);
         }
 
+        public static void IsFalse(this bool condition)
+        {
+            Assert.IsFalse(condition);
+        }
+
         public static void ShouldEqual<T>(this T a, T b)
         {
             Assert.AreEqual(b, a);

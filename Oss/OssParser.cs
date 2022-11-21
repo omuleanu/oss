@@ -13,6 +13,8 @@ namespace Oss
         private readonly ILogger logger = new Logger();
         private readonly FileOp fileOp = new FileOp();
 
+        public IEnumerable<string> Flags { get; set; }
+
         public ParseRes Parse(string inputPath, string outputPath, bool watch, string dir = null)
         {
             var rootPath = dir ?? new FileInfo(inputPath).Directory?.FullName ?? string.Empty;
@@ -83,7 +85,6 @@ namespace Oss
             string ruleName = null;
 
             var vars = new VarStorg();
-            //var vars = new SortedDictionary<string, OssVar>(new ReverseComparer<string>(StringComparer.InvariantCulture));
 
             void ClearEmpty()
             {
@@ -210,7 +211,7 @@ namespace Oss
                     // insert file.txt content
 
                     i += OssConst.InsertKey.Length;
-                    var url = str.GetNextWordToSemicol(i, out i);
+                    var url = str.GetNextWordsUntilSemicolon(i, out i);
                     var insPath = rootPath + "\\" + url;
 
                     // add inserted file to watchlist
@@ -225,14 +226,14 @@ namespace Oss
                     // define rule name (for inheritance)
 
                     i += OssConst.NameKey.Length;
-                    ruleName = str.GetNextWordToSemicol(i, out i);
+                    ruleName = str.GetNextWordsUntilSemicolon(i, out i);
                 }
                 else if (str.IsNextStr(i, OssConst.Atvar))
                 {
                     // insert var content
 
                     i += OssConst.Atvar.Length;
-                    var name = str.GetNextWordToSemicol(i, out i);
+                    var name = str.GetNextWordsUntilSemicolon(i, out i);
                     if (vars.ContainsKey(name))
                     {
                         var osv = vars[name];
@@ -249,6 +250,35 @@ namespace Oss
                     {
                         ClearEmpty();
                         logger.Info($"could not find var {name}");
+                    }
+                }
+                else if (str.IsNextStr(i, OssConst.IfCond))
+                {
+                    i += OssConst.IfCond.Length;
+                    bool not = false;
+                    var phrase = str.GetNextStringUntilChar('{', i, out i);
+
+                    var words = phrase.Split(' ');
+
+                    var condflag = words[0];
+                    if (condflag == OssConst.Not)
+                    {
+                        not = true;
+                        if (words.Length < 2)
+                        {
+                            logger.Error("expected flag after not");
+                        }
+
+                        condflag = words[1];
+                    }
+
+                    if (Flags.Contains(condflag) && not)
+                    {
+                        // skip until end '}'
+                        i = str.IndexOf('{', i);
+                        var endi = str.GetBlockEnd(i);
+                        var block = str.FromTo(i, endi);
+                        i = endi;
                     }
                 }
                 else
@@ -268,7 +298,7 @@ namespace Oss
             }
 
             slres = slres.Trim(StrConst.EmptyChars);
-            
+
             var unusedVars = vars.GetUnusedNames().ToArray();
 
             if (unusedVars.Any())
@@ -302,7 +332,7 @@ namespace Oss
                     // inherit
 
                     i += OssConst.InheritKey.Length;
-                    var name = str.GetNextWordToSemicol(i, out i);
+                    var name = str.GetNextWordsUntilSemicolon(i, out i);
                     inherits.Add(name);
                     res = res.TrimEnd(StrConst.EmptyChars); // rem space left from inherit line
                     continue;
@@ -482,7 +512,7 @@ namespace Oss
                     }
                     else
                     {
-                        logger.Error("could not find var at " + str.GetNextWordToSemicol(i, out _));
+                        logger.Error("could not find var at " + str.GetNextWordsUntilSemicolon(i, out _));
                     }
                 }
 

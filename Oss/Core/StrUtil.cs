@@ -113,17 +113,22 @@ namespace Oss.Core
             return name;
         }
 
-        public static string GetNextWordToSemicol(this string src, int starti, out int endi)
+        public static string GetNextWordsUntilSemicolon(this string src, int starti, out int endi)
+        {
+            return GetNextStringUntilChar(src, ';', starti, out endi);
+        }
+
+        public static string GetNextStringUntilChar(this string src, char toChar, int starti, out int endi)
         {
             var nonUrlChars = new[] { '\n', '\r' };
 
-            var signi = src.IndexOf(';', starti);
+            var signi = src.IndexOf(toChar, starti);
 
             var name = src.FromTo(starti, signi - 1).Trim();
 
             if (name.Any(c => nonUrlChars.Contains(c)))
             {
-                throw new Exception($"invalid string: {name} , should not contain \\n \\r (perhaps you forgot a ';') ");
+                throw new Exception($"invalid string: {name} , should not contain \\n \\r (perhaps you forgot a '{toChar}' ) ");
             }
 
             endi = signi;
@@ -138,7 +143,7 @@ namespace Oss.Core
             }
 
             return name;
-        }
+        }        
 
         public static bool IsNextStr(this string source, int startIndex, string nextStr)
         {

@@ -10,5 +10,9 @@
         public const string InsertKey = "@insert ";
         public const string Atvar = "@var.";
         public const string NameKey = "@name ";
+        public const string IfCond = "@if";
+        public const string EndIfCond = "@endif";
+        public const string Not = "@not";
+
     }
 }

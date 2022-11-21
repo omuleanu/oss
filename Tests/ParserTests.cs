@@ -2,11 +2,47 @@ using System.Linq;
 using NUnit.Framework;
 using Oss;
 using System.Text;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Tests
 {
+
     public class ParserTests
     {
+        [Test]
+        public void Serialize()
+        {
+            var pc = new ParseConfig()
+            {
+                NoWatch = true,
+                Files = new() { { "abc", "123" }, { "f1", "f2" } },
+                Flags = new[] { "flag1" }
+            };
+
+            var res = JsonSerializer.Serialize(pc);
+            res.Out();
+        }
+
+        [Test]
+        public void ParseIfNot()
+        {
+            var parser = new OssParser() { Flags = new []{ "blazor" } };
+            var str = new StringBuilder();
+            str.AppendLine("div1{ color: red; }");
+            str.AppendLine("@if @not blazor {");
+            str.AppendLine("div5 { color: red;}");
+            str.AppendLine("}");
+            str.AppendLine("div2{ color: blue; }");
+
+            var res = parser.ParseOssString(str.ToString(), null);
+
+            res.ParseRes.Out();
+            res.ParseRes.Contains("div1").IsTrue();
+            res.ParseRes.Contains("div2").IsTrue();
+            res.ParseRes.Contains("div5").IsFalse();
+        }
+
         [Test]
         public void ParseVarWithParam()
         {
@@ -66,7 +102,7 @@ namespace Tests
 
             res.ParseRes.Out();
             res.ParseRes.Contains(".cl1 { abc: 5; }").IsTrue();
-        }        
+        }
 
         [Test]
         public void ParseVar()
